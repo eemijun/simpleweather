@@ -2,6 +2,7 @@ import json
 
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+import config  #to get API Key
 
 from weather import Ui_SimpleWeather
 
@@ -12,7 +13,9 @@ class MainWindow(QMainWindow, Ui_SimpleWeather):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
 
-        self.threadpool = QThreadPool()
+        #self.threadpool = QThreadPool()
+
+        app_id = config.app_id #Open Weather API Key
 
         self.pushButton.clicked.connect(self.read_weather)
 
