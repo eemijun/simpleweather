@@ -30,6 +30,7 @@ class MainWindow(QMainWindow, Ui_SimpleWeather):
         self.lon_num_lbl.setText((str(r['coord']['lon'])))
         self.lat_num_lbl.setText((str(r['coord']['lat'])))
         self.tmz_num_lbl.setText((str(r['timezone'])))
+        self.lineEdit.setText(r['name'])
 
     def find_city(self):
         with open('sam_data.json', encoding="utf8") as f:
