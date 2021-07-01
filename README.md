@@ -1,9 +1,10 @@
 # simpleweather
-Program
+Program that displays the weather for your selected city
 
 ## About
 This is the source code for simple weather.
 simple weather uses [PyQt5](https://pypi.org/project/PyQt5/) for the UI
+![Screenshot](docs/image.png)
 
 ### Installation
 
