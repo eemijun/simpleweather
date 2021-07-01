@@ -18,6 +18,7 @@ class MainWindow(QMainWindow, Ui_SimpleWeather):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
+        self.setFixedSize(651, 685)
 
         # self.threadpool = QThreadPool()
 
@@ -26,15 +27,10 @@ class MainWindow(QMainWindow, Ui_SimpleWeather):
         self.pushButton.clicked.connect(self.read_weather)
         self.lineEdit.returnPressed.connect(self.find_city)
         self.but_test1.clicked.connect(self.read_weather)
-        # self.comboBox.currentTextChanged.connect(self.select_city) was causing issue when typing to line edit
-        self.comboBox.currentIndexChanged.connect(self.select_city)
+        # self.comboBox.currentIndexChanged.connect(self.select_city)
         self.comboBox.setLineEdit(self.lineEdit)
 
         self.show()
-
-    def test_weather(self):
-        with open('sam_all.json', encoding="utf8") as f:
-            r = json.load(f)
 
     def read_weather(self):
         weather_info = cities[self.comboBox.currentIndex()]
@@ -64,6 +60,8 @@ class MainWindow(QMainWindow, Ui_SimpleWeather):
         self.tmz_num_lbl.setText(str(r['timezone']))
         if 'alerts' in r:
             self.alert_lbl.setText("Alert- " + str(r['alerts'][0]['event']))
+        else:
+            self.alert_lbl.setText("Alerts - ")
 
         for days in r['daily']:
             day_labels[count].setText(str((datetime.datetime.fromtimestamp(
@@ -84,17 +82,15 @@ class MainWindow(QMainWindow, Ui_SimpleWeather):
                 pixmap = QPixmap('icons_png\\01d@2x.png')
             elif 801 <= days['weather'][0]['id'] <= 804:
                 pixmap = QPixmap('icons_png\\04d@2x.png')
-            day_imgs[count].setPixmap(pixmap)  # str(days['weather'][0]['id']) to get id for icon
+            day_imgs[count].setPixmap(pixmap)
             count += 1
-
-        # datetime.datetime.fromtimestamp(
-        #                  int(r['current']['sunrise'])
-        #                 ).strftime('%Y-%m-%d %H:%M:%S'))
+        self.find_city()  # Fix issue where second city input gave blank value
 
     def find_city(self):
+        cities.clear()
         self.comboBox.clear()
         city = self.lineEdit.text()
-        print("city __ " + city)
+        print("city __ " + self.lineEdit.text())
         self.textEdit.append("Searching for " + city)  # for testing
         with open('cities_list.json', encoding="utf8") as f:
             r = json.load(f)
@@ -104,12 +100,13 @@ class MainWindow(QMainWindow, Ui_SimpleWeather):
                 cities.append(dict_city.copy())
                 self.textEdit.append("adding to dict " + str(dict_city.copy()))
 
-    def select_city(self, city):
-        if len(cities) == 0:
-            return
-        else:
-            self.textEdit.append("Selected " + str(city))  # for testing
-            print(cities[self.comboBox.currentIndex()])
+    # def select_city(self, city):
+    #     if len(cities) == 0:
+    #         return
+    #     else:
+    #         self.textEdit.append("Selected " + str(city))  # for testing
+    #         print(cities[self.comboBox.currentIndex()])
+
 
 if __name__ == '__main__':
 
