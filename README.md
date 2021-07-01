@@ -1,5 +1,5 @@
 # simpleweather
-Program
+Program that displays the weather for your selected city
 
 ## About
 This is the source code for simple weather.
